@@ -1,0 +1,717 @@
+#AccWare Data Dictionary
+D=DDV7120|AccWare Data Dictionary (DDCP=_CUSTOM)|
+#
+#
+#===============================================================================
+#==TABLE no 0      : Соединений
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=1SUSERS |Соединений                    |A          |1SUSERS    |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=USRSCNT   |Number of users     |N   |4     |0        
+F=NETCHGCN  |Count of changes    |N   |10    |0        
+#
+#===============================================================================
+#==TABLE no 1      : Системная
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=1SSYSTEM|Системная                     |A          |1SSYSTEM   |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=CURDATE   |Date of TM          |D   |8     |0        
+F=CURTIME   |Time of TM          |C   |6     |0        
+F=EVENTIDTA |ID Event On TA      |C   |9     |0        
+F=DBSIGN    |DB Sign             |C   |3     |0        
+F=DBSETUUID |UUID of DB set      |C   |36    |0        
+F=SNAPSHPER |Snap Shot Period    |C   |1     |0        
+F=ACCDATE   |Date of Account Tota|D   |8     |0        
+F=FLAGS     |FLAGS               |N   |10    |0        
+#
+#===============================================================================
+#==TABLE no 2      : Константы
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=1SCONST |Константы                     |A          |1SCONST    |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=OBJID     |ID obj(0-cons )     |C   |9     |0        
+F=ID        |ID parameter        |C   |4     |0        
+F=DATE      |Fix date            |D   |8     |0        
+F=PARTNO    |no of part          |N   |3     |0        
+F=VALUE     |valume              |C   |23    |0        
+F=DOCID     |ID Document         |C   |9     |0        
+F=TIME      |Time                |C   |6     |0        
+F=ACTNO     |Action No           |N   |6     |0        
+F=LINENO    |LineNo              |N   |4     |0        
+F=TVALUE    |                    |C   |3     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |              |0     |ID,OBJID,DATE,TIME,DOCID,PARTNO                             |IDD        
+I=DOC      |              |0     |DOCID,ACTNO,PARTNO                                          |DOC        
+#
+#===============================================================================
+#==TABLE no 3      : Журналы
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=1SJOURN |Журналы                       |A          |1SJOURN    |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDJOURNAL |ID of Journal       |C   |4     |0        
+F=IDDOC     |ID Document         |C   |9     |0        
+F=IDDOCDEF  |ID Def Document     |C   |4     |0        
+F=APPCODE   |Application code    |N   |3     |0        
+F=DATE      |date                |D   |8     |0        
+F=TIME      |Time                |C   |6     |0        
+F=DNPREFIX  |Prefix Document No  |C   |18    |0        
+F=DOCNO     |Document No         |C   |8     |0        
+F=CLOSED    |Flag Document is Clo|N   |1     |0        
+F=ISMARK    |Flag Document is Mar|C   |1     |0        
+F=ACTCNT    |Action counter      |C   |6     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDDOC    |Id Doc        |0     |IDDOC                                                       |IDDOC      
+I=ACDATETIM|Date+Time+ID  |0     |DATE,TIME,IDDOC                                             |ACDATETIME 
+I=DOCNO    |Prefix+No     |0     |DNPREFIX,DOCNO(UPPER)                                       |DOCNO      
+I=DOCTYPE  |Type+Date+Time|0     |IDDOCDEF,DATE,TIME,IDDOC                                    |DOCTYPE    
+I=JOURNAL  |Journal+Date+T|0     |IDJOURNAL,DATE,TIME,IDDOC                                   |JOURNAL    
+#
+#===============================================================================
+#==TABLE no 4      : Ссылки документов
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=1SCRDOC |Ссылки документов             |A          |1SCRDOC    |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=MDID      |Md ID of select     |C   |4     |0        
+F=PARENTVAL |Parent Value        |C   |23    |0        
+F=CHILDDATE |Child date          |D   |8     |0        
+F=CHILDTIME |Child Time          |C   |6     |0        
+F=CHILDID   |Child Doc ID        |C   |9     |0        
+F=FLAGS     |Flags of refers     |N   |2     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=CHILD    |Child Referenc|0     |CHILDID,MDID,PARENTVAL                                      |CHILD      
+I=PARENT   |Parent Referen|0     |MDID,PARENTVAL,CHILDDATE,CHILDTIME,CHILDID                  |PARENT     
+#
+#===============================================================================
+#==TABLE no 5      : Номеров документов
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=1SDNLOCK|Номеров документов            |A          |1SDNLOCK   |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=DNPREFIX  |Prefix object       |C   |28    |0        
+F=DOCNO     |Object No           |C   |20    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=DOCNO    |Prefix+No     |0     |DNPREFIX,DOCNO                                              |DOCNO      
+#
+#===============================================================================
+#==TABLE no 6      : Уникальности
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=1SUIDCTL|Уникальности                  |A          |1SUIDCTL   |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=TYPEID    |Type ID             |C   |4     |0        
+F=MAXID     |Max Object ID       |C   |9     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=MAIN     |TypeID        |0     |TYPEID                                                      |MAIN       
+#
+#===============================================================================
+#==TABLE no 7      : Длинные строки
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=1SBLOB  |Длинные строки                |A          |1SBLOB     |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=FIELDID   |Field Id            |C   |4     |0        
+F=OBJID     |Obj Id              |C   |9     |0        
+F=BLOCKNO   |Block Number        |N   |4     |0        
+F=BLOCK     |Block               |C   |80    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=MAIN     |              |0     |FIELDID,OBJID,BLOCKNO                                       |MAIN       
+#
+#===============================================================================
+#==TABLE no 8      : Справочник Кошки
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC45    |Справочник Кошки              |A          |SC45       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=PARENTID  |ID parent obj       |C   |9     |0        
+F=CODE      |object code         |C   |8     |0        
+F=DESCR     |object description  |C   |64    |0        
+F=ISFOLDER  |Flag - Is Line - Fol|N   |1     |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP25      |(P)Номер            |C   |50    |0        
+F=SP26      |(P)Порода           |C   |32    |0        
+F=SP27      |(P)ПородаСсылка     |C   |9     |0        
+F=SP28      |(P)Окрас            |C   |32    |0        
+F=SP29      |(P)ДатаРождения     |D   |8     |0        
+F=SP30      |(P)ПолКошки         |C   |9     |0        
+F=SP327     |(P)Кастрат          |N   |2     |0        
+F=SP31      |(P)Отец             |C   |40    |0        
+F=SP32      |(P)ОтецСсылка       |C   |9     |0        
+F=SP33      |(P)Мать             |C   |40    |0        
+F=SP34      |(P)МатьСсылка       |C   |9     |0        
+F=SP35      |(P)Заводчик         |C   |32    |0        
+F=SP36      |(P)ЗаводчикСсылка   |C   |9     |0        
+F=SP37      |(P)Владелец         |C   |32    |0        
+F=SP38      |(P)ВладелецСсылка   |C   |9     |0        
+F=SP39      |(P)Питомник         |C   |32    |0        
+F=SP40      |(P)НаПлемя          |N   |2     |0        
+F=SP41      |(P)Клуб             |C   |9     |0        
+F=SP42      |(P)ДатаВыдачиРодосло|D   |8     |0        
+F=SP162     |(P)Комментарий      |C   |100   |0        
+F=SP169     |(P)ТекущийТитул     |C   |20    |0        
+F=SP195     |(P)ТекущийТитулСпр  |C   |9     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=PCODE    |of PARENT and |0     |PARENTID,ISFOLDER,CODE(UPPER)                               |PCODE      
+I=PDESCR   |of PARENT and |0     |PARENTID,ISFOLDER,DESCR(UPPER)                              |PDESCR     
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI25     |VI25          |0     |SP25(UPPER=128)                                             |VI25       
+I=VIP25    |VIP25         |0     |PARENTID,ISFOLDER,SP25(UPPER=128)                           |VIP25      
+I=VI27     |VI27          |0     |SP27,DESCR(UPPER)                                           |VI27       
+I=VIP27    |VIP27         |0     |PARENTID,ISFOLDER,SP27,DESCR(UPPER)                         |VIP27      
+I=VI28     |VI28          |0     |SP28(UPPER=128),DESCR(UPPER)                                |VI28       
+I=VIP28    |VIP28         |0     |PARENTID,ISFOLDER,SP28(UPPER=128),DESCR(UPPER)              |VIP28      
+I=VI29     |VI29          |0     |SP29,DESCR(UPPER)                                           |VI29       
+I=VIP29    |VIP29         |0     |PARENTID,ISFOLDER,SP29,DESCR(UPPER)                         |VIP29      
+I=VI30     |VI30          |0     |SP30,DESCR(UPPER)                                           |VI30       
+I=VIP30    |VIP30         |0     |PARENTID,ISFOLDER,SP30,DESCR(UPPER)                         |VIP30      
+I=VI36     |VI36          |0     |SP36,DESCR(UPPER)                                           |VI36       
+I=VIP36    |VIP36         |0     |PARENTID,ISFOLDER,SP36,DESCR(UPPER)                         |VIP36      
+I=VI38     |VI38          |0     |SP38,DESCR(UPPER)                                           |VI38       
+I=VIP38    |VIP38         |0     |PARENTID,ISFOLDER,SP38,DESCR(UPPER)                         |VIP38      
+I=VI42     |VI42          |0     |SP42,DESCR(UPPER)                                           |VI42       
+I=VIP42    |VIP42         |0     |PARENTID,ISFOLDER,SP42,DESCR(UPPER)                         |VIP42      
+#
+#===============================================================================
+#==TABLE no 9      : Справочник ПородыКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC48    |Справочник ПородыКошек        |A          |SC48       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=PARENTID  |ID parent obj       |C   |9     |0        
+F=CODE      |object code         |C   |4     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISFOLDER  |Flag - Is Line - Fol|N   |1     |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP46      |(P)НаименованиеПоРус|C   |50    |0        
+F=SP155     |(P)НомерПоПорядкуВКа|N   |4     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=PCODE    |of PARENT and |0     |PARENTID,ISFOLDER,CODE(UPPER)                               |PCODE      
+I=PDESCR   |of PARENT and |0     |PARENTID,ISFOLDER,DESCR(UPPER)                              |PDESCR     
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI46     |VI46          |0     |SP46(UPPER=128)                                             |VI46       
+I=VIP46    |VIP46         |0     |PARENTID,ISFOLDER,SP46(UPPER=128)                           |VIP46      
+I=VI155    |VI155         |0     |SP155,DESCR(UPPER)                                          |VI155      
+I=VIP155   |VIP155        |0     |PARENTID,ISFOLDER,SP155,DESCR(UPPER)                        |VIP155     
+#
+#===============================================================================
+#==TABLE no 10     : Справочник ПородыКошекПорядокГрупп
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC331   |Справочник ПородыКошекПорядокГ|A          |SC331      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP332     |(P)НаименованиеПоРус|C   |50    |0        
+F=SP333     |(P)НомерПоПорядкуВКа|N   |2     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI332    |VI332         |0     |SP332(UPPER=128)                                            |VI332      
+I=VI333    |VI333         |0     |SP333,CODE(UPPER)                                           |VI333      
+#
+#===============================================================================
+#==TABLE no 11     : Справочник ОкрасыКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC51    |Справочник ОкрасыКошек        |A          |SC51       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |10    |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP49      |(P)НаименованиеПоРус|C   |50    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI49     |VI49          |0     |SP49(UPPER=128)                                             |VI49       
+#
+#===============================================================================
+#==TABLE no 12     : Справочник ОкрасыКошекИсключения
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC177   |Справочник ОкрасыКошекИсключен|A          |SC177      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP179     |(P)НаименованиеПоРус|C   |50    |0        
+F=SP180     |(P)ПородаСсылка     |C   |9     |0        
+F=SP192     |(P)КодОкраса        |C   |10    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+#
+#===============================================================================
+#==TABLE no 13     : Справочник ЗаводчикиКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC60    |Справочник ЗаводчикиКошек     |A          |SC60       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP171     |(P)НаименованиеПоРус|C   |50    |0        
+F=SP199     |(P)НаименованиеПоАнг|C   |50    |0        
+F=SP244     |(P)НомерЧленскогоБил|C   |15    |0        
+F=SP55      |(P)АдресЭлПочты     |C   |50    |0        
+F=SP54      |(P)Телефон          |C   |50    |0        
+F=SP56      |(P)Клуб             |C   |9     |0        
+F=SP57      |(P)Город            |C   |9     |0        
+F=SP200     |(P)ДатаВступленияВКл|D   |8     |0        
+F=SP52      |(P)НазваниеПитомника|C   |50    |0        
+F=SP53      |(P)ДатаРегистрации  |D   |8     |0        
+F=SP202     |(P)СайтПитомника    |C   |50    |0        
+F=SP203     |(P)РегНомерПитомника|C   |50    |0        
+F=SP201     |(P)АктЧленКлуба     |N   |2     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI56     |VI56          |0     |SP56                                                        |VI56       
+I=VI52     |VI52          |0     |SP52(UPPER=128)                                             |VI52       
+I=VI53     |VI53          |0     |SP53                                                        |VI53       
+I=VI201    |VI201         |0     |SP201,DESCR(UPPER)                                          |VI201      
+#
+#===============================================================================
+#==TABLE no 14     : Справочник КлубыКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC63    |Справочник КлубыКошек         |A          |SC63       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP61      |(P)НаименованиеПоРус|C   |50    |0        
+F=SP167     |(P)Город            |C   |9     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI61     |VI61          |0     |SP61(UPPER=128)                                             |VI61       
+#
+#===============================================================================
+#==TABLE no 15     : Справочник ВыставочныеКлассыКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC67    |Справочник ВыставочныеКлассыКо|A          |SC67       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP64      |(P)НаименованиеПоРус|C   |50    |0        
+F=SP65      |(P)Титул            |C   |9     |0        
+F=SP198     |(P)ТекущийТитул     |C   |9     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI64     |VI64          |0     |SP64(UPPER=128)                                             |VI64       
+I=VI65     |VI65          |0     |SP65,DESCR(UPPER)                                           |VI65       
+#
+#===============================================================================
+#==TABLE no 16     : Справочник ЭкспертыКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC71    |Справочник ЭкспертыКошек      |A          |SC71       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP68      |(P)Страна           |C   |30    |0        
+F=SP69      |(P)ГруппыПород      |C   |30    |0        
+F=SP216     |(P)АдресЭлПочты     |C   |30    |0        
+F=SP217     |(P)Телефон          |C   |50    |0        
+F=SP289     |(P)Выставка         |C   |9     |0        
+F=SP312     |(P)ФИО_по_английски |C   |50    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI68     |VI68          |0     |SP68(UPPER=128)                                             |VI68       
+I=VI69     |VI69          |0     |SP69(UPPER=128)                                             |VI69       
+I=VI289    |VI289         |0     |SP289,DESCR(UPPER)                                          |VI289      
+#
+#===============================================================================
+#==TABLE no 17     : Справочник РезультатыЭкспертизыКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC74    |Справочник РезультатыЭкспертиз|A          |SC74       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=PARENTID  |ID parent obj       |C   |9     |0        
+F=CODE      |object code         |C   |20    |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISFOLDER  |Flag - Is Line - Fol|N   |1     |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP72      |(P)НаименованиеПоРус|C   |50    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=PCODE    |of PARENT and |0     |PARENTID,ISFOLDER,CODE(UPPER)                               |PCODE      
+I=PDESCR   |of PARENT and |0     |PARENTID,ISFOLDER,DESCR(UPPER)                              |PDESCR     
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI72     |VI72          |0     |SP72(UPPER=128)                                             |VI72       
+I=VIP72    |VIP72         |0     |PARENTID,ISFOLDER,SP72(UPPER=128)                           |VIP72      
+#
+#===============================================================================
+#==TABLE no 18     : Справочник ТитулСокращения
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC193   |Справочник ТитулСокращения    |A          |SC193      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=PARENTID  |ID parent obj       |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISFOLDER  |Flag - Is Line - Fol|N   |1     |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP204     |(P)ТитулПравильный  |C   |9     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=PCODE    |of PARENT and |0     |PARENTID,CODE(UPPER)                                        |PCODE      
+I=PDESCR   |of PARENT and |0     |PARENTID,DESCR(UPPER)                                       |PDESCR     
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+#
+#===============================================================================
+#==TABLE no 19     : Справочник Города
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC165   |Справочник Города             |A          |SC165      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+#
+#===============================================================================
+#==TABLE no 20     : Справочник Валюты
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC81    |Справочник Валюты             |A          |SC81       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |3     |0        
+F=DESCR     |object description  |C   |25    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP75      |(P)ПолнНаименование |C   |50    |0        
+F=SP78      |(P)ИмяФайлаПрописи  |C   |12    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+#
+#===============================================================================
+#==TABLE no 21     : Справочник ВидыПриходовРасходов
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC231   |Справочник ВидыПриходовРасходо|A          |SC231      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |50    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP242     |(P)Стоимость        |N   |11    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+#
+#===============================================================================
+#==TABLE no 22     : Справочник Сотрудники
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC247   |Справочник Сотрудники         |A          |SC247      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |25    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP295     |(P)Телефон          |C   |50    |0        
+F=SP296     |(P)АдресЭлПочты     |C   |50    |0        
+F=SP299     |(P)ИмяПоАнглийски   |C   |30    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+#
+#===============================================================================
+#==TABLE no 23     : Справочник ЗаводчикиПороды
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=SC300   |Справочник ЗаводчикиПороды    |A          |SC300      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=ID        |ID object           |C   |9     |0        
+F=CODE      |object code         |C   |5     |0        
+F=DESCR     |object description  |C   |25    |0        
+F=ISMARK    |Flag Object is Marke|C   |1     |0        
+F=VERSTAMP  |Version stamp       |C   |6     |0        
+F=SP302     |(P)Заводчик         |C   |9     |0        
+F=SP303     |(P)Порода           |C   |9     |0        
+F=SP304     |(P)Окрас            |C   |10    |0        
+F=SP305     |(P)Кошка            |C   |9     |0        
+F=SP307     |(P)ПолКошки         |C   |9     |0        
+F=SP309     |(P)ДатаРождения     |D   |8     |0        
+F=SP320     |(P)Комментарий      |C   |50    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDD      |of ID         |0     |ID                                                          |IDD        
+I=CODE     |of CODE       |0     |CODE(UPPER)                                                 |CODE       
+I=DESCR    |of DESCR      |0     |DESCR(UPPER)                                                |DESCR      
+I=VI302    |VI302         |0     |SP302,DESCR(UPPER)                                          |VI302      
+I=VI303    |VI303         |0     |SP303,DESCR(UPPER)                                          |VI303      
+I=VI307    |VI307         |0     |SP307,DESCR(UPPER)                                          |VI307      
+#
+#===============================================================================
+#==TABLE no 24     : Документ ВыставкаКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DH88    |Документ ВыставкаКошек        |A          |DH88       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=SP83      |(P)МестоПроведения  |C   |50    |0        
+F=SP84      |(P)Клуб             |C   |9     |0        
+F=SP156     |(P)ДатаЗакрытияКатал|D   |8     |0        
+F=SP157     |(P)КаталогЗакрыт    |N   |2     |0        
+F=SP161     |(P)Лицензия         |C   |30    |0        
+F=SP267     |(P)Дата1            |D   |8     |0        
+F=SP268     |(P)Дата2            |D   |8     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=ID       |of IDDOC      |0     |IDDOC                                                       |ID         
+#
+#===============================================================================
+#==TABLE no 25     : Документ (Мн.ч.) ВыставкаКошек
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DT88    |Документ (Мн.ч.) ВыставкаКошек|A          |DT88       |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=LINENO    |LineNo              |N   |4     |0        
+F=SP85      |(P)Эксперт          |C   |9     |0        
+F=SP223     |(P)ГруппыПород      |C   |30    |0        
+F=SP222     |(P)КолвоЖивотныхНаЭк|N   |5     |0        
+F=SP226     |(P)КолвоЖивотныхНаЭк|N   |5     |0        
+F=SP86      |(P)Примечания       |C   |50    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDLINE   |of IDDOC+LineN|0     |IDDOC,LINENO                                                |IDLINE     
+#
+#===============================================================================
+#==TABLE no 26     : Документ ЗаявкаНаВыставку
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DH117   |Документ ЗаявкаНаВыставку     |A          |DH117      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=SP90      |(P)Кошка            |C   |9     |0        
+F=SP91      |(P)НомерПоКаталогу  |N   |11    |0        
+F=SP89      |(P)Выставка         |C   |9     |0        
+F=SP92      |(P)Мать             |C   |50    |0        
+F=SP93      |(P)МатьОкрас        |C   |20    |0        
+F=SP94      |(P)Отец             |C   |50    |0        
+F=SP95      |(P)ОтецОкрас        |C   |20    |0        
+F=SP96      |(P)КолвоОценок      |N   |3     |0        
+F=SP97      |(P)ВыставочныйКласс1|C   |9     |0        
+F=SP98      |(P)ВыставочныйКласс2|C   |9     |0        
+F=SP99      |(P)ПереходКласса    |N   |2     |0        
+F=SP102     |(P)ВладелецСсылка   |C   |9     |0        
+F=SP103     |(P)Клуб             |C   |9     |0        
+F=SP104     |(P)Реклама          |N   |2     |0        
+F=SP105     |(P)СвояКлетка       |N   |2     |0        
+F=SP325     |(P)КлеткаНужна      |N   |2     |0        
+F=SP106     |(P)СуммаОплаты      |N   |11    |0        
+F=SP329     |(P)ДатаОплаты       |D   |8     |0        
+F=SP107     |(P)УчастиеВWCFРинге |N   |2     |0        
+F=SP108     |(P)УчастиеВПородномР|N   |2     |0        
+F=SP297     |(P)ПродажаКотят     |N   |2     |0        
+F=SP109     |(P)Агент            |C   |30    |0        
+F=SP110     |(P)Приоритет        |N   |3     |0        
+F=SP174     |(P)ЕстьВКаталоге    |N   |2     |0        
+F=SP205     |(P)БезЭкспертизы    |N   |2     |0        
+F=SP206     |(P)ЭкспертизаРеальна|N   |2     |0        
+F=SP207     |(P)ЭкспертизаФормаль|N   |2     |0        
+F=SP214     |(P)Эксперт1         |C   |9     |0        
+F=SP215     |(P)Эксперт2         |C   |9     |0        
+F=SP323     |(P)Эксперт1_НеМенять|N   |2     |0        
+F=SP324     |(P)Эксперт2_НеМенять|N   |2     |0        
+F=SP298     |(P)ПородыКотят      |C   |50    |0        
+F=SP318     |(P)ОтецСсылка       |C   |9     |0        
+F=SP319     |(P)МатьСсылка       |C   |9     |0        
+F=SP321     |(P)ОтсДень1         |N   |2     |0        
+F=SP322     |(P)ОтсДень2         |N   |2     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=ID       |of IDDOC      |0     |IDDOC                                                       |ID         
+#
+#===============================================================================
+#==TABLE no 27     : Документ (Мн.ч.) ЗаявкаНаВыставку
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DT117   |Документ (Мн.ч.) ЗаявкаНаВыста|A          |DT117      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=LINENO    |LineNo              |N   |4     |0        
+F=SP115     |(P)ДатаРезультата   |D   |8     |0        
+F=SP114     |(P)Эксперт          |C   |9     |0        
+F=SP112     |(P)РезультатЭксперти|C   |9     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDLINE   |of IDDOC+LineN|0     |IDDOC,LINENO                                                |IDLINE     
+#
+#===============================================================================
+#==TABLE no 28     : Документ Приход
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DH227   |Документ Приход               |A          |DH227      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=SP228     |(P)ВладелецКошки    |C   |9     |0        
+F=SP229     |(P)ОбщаяСумма       |N   |11    |0        
+F=SP290     |(P)СотрудникКомуПрих|C   |9     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=ID       |of IDDOC      |0     |IDDOC                                                       |ID         
+#
+#===============================================================================
+#==TABLE no 29     : Документ (Мн.ч.) Приход
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DT227   |Документ (Мн.ч.) Приход       |A          |DT227      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=LINENO    |LineNo              |N   |4     |0        
+F=SP230     |(P)ВидПрихода       |C   |9     |0        
+F=SP233     |(P)Сумма            |C   |10    |0        
+F=SP246     |(P)Кошка            |C   |9     |0        
+F=SP293     |(P)Комментарий1     |C   |50    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDLINE   |of IDDOC+LineN|0     |IDDOC,LINENO                                                |IDLINE     
+#
+#===============================================================================
+#==TABLE no 30     : Документ ПлеменноеСвидетельство
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DH250   |Документ ПлеменноеСвидетельств|A          |DH250      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=SP253     |(P)ОтецСсылка       |C   |9     |0        
+F=SP254     |(P)МатьСсылка       |C   |9     |0        
+F=SP255     |(P)НомерРодословной |C   |20    |0        
+F=SP265     |(P)РуководительПлеме|C   |9     |0        
+F=SP266     |(P)ДатаАктирования  |D   |8     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=ID       |of IDDOC      |0     |IDDOC                                                       |ID         
+#
+#===============================================================================
+#==TABLE no 31     : Документ (Мн.ч.) ПлеменноеСвидетельство
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DT250   |Документ (Мн.ч.) ПлеменноеСвид|A          |DT250      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=LINENO    |LineNo              |N   |4     |0        
+F=SP257     |(P)НомерМетрики     |C   |20    |0        
+F=SP258     |(P)Пол              |C   |9     |0        
+F=SP259     |(P)КличкаКотенка    |C   |50    |0        
+F=SP260     |(P)ПородаОкрас      |C   |20    |0        
+F=SP261     |(P)Примечание       |C   |50    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDLINE   |of IDDOC+LineN|0     |IDDOC,LINENO                                                |IDLINE     
+#
+#===============================================================================
+#==TABLE no 32     : Документ Трансфер
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DH269   |Документ Трансфер             |A          |DH269      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=SP287     |(P)Кошка            |C   |9     |0        
+F=SP270     |(P)Владелец         |C   |9     |0        
+F=SP271     |(P)НовыйВладелец    |C   |9     |0        
+F=SP273     |(P)ОтветственноеЛицо|C   |9     |0        
+F=SP313     |(P)Класс            |C   |9     |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=ID       |of IDDOC      |0     |IDDOC                                                       |ID         
+#
+#===============================================================================
+#==TABLE no 33     : Документ (Мн.ч.) Трансфер
+# Name    |Descr                         |Type[A/S/U]|DBTableName|ReUsable  
+T=DT269   |Документ (Мн.ч.) Трансфер     |A          |DT269      |1         
+#-----Fields-------
+# Name      |Descr               |Type|Length|Precision
+F=IDDOC     |ID Document's       |C   |9     |0        
+F=LINENO    |LineNo              |N   |4     |0        
+F=SP314     |(P)Оценка           |C   |9     |0        
+F=SP335     |(P)ОценкаСтр        |C   |20    |0        
+F=SP315     |(P)Эксперт          |C   |9     |0        
+F=SP316     |(P)ДатаВыставки     |C   |20    |0        
+F=SP317     |(P)МестоПроведенияВы|C   |50    |0        
+#----Indexes------
+# Name     |Descr         |Unique|Indexed fields                                              |DBName     
+I=IDLINE   |of IDDOC+LineN|0     |IDDOC,LINENO                                                |IDLINE     
